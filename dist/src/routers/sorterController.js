@@ -29,17 +29,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = __importStar(require("express"));
 const sorterService_1 = require("../services/sorterService");
 const auth_1 = __importDefault(require("../middleware/auth"));
+const getDirection_1 = require("../utils/getDirection");
 const sortRouter = express.Router();
 sortRouter.post('/api/v1/sorter', auth_1.default, (req, res) => {
     try {
-        if (!req.body.boardingCards)
+        if (!req.body)
             return res.status(404).send({ error: "Invalid request" });
-        var sorterService = new sorterService_1.SorterService();
-        var boardingCards = JSON.parse(req.body.boardingCards);
+        const sorterService = new sorterService_1.SorterService();
+        const boardingCards = JSON.parse(JSON.stringify(req.body));
         let sortedBoardingCards = sorterService.SortBoardingCards(boardingCards);
         if (!sortedBoardingCards)
             return res.status(404).send({ error: "No data found" });
-        res.send(sortedBoardingCards);
+        let result = sortedBoardingCards.map(card => {
+            console.log((0, getDirection_1.getString)(card));
+            return (0, getDirection_1.getString)(card);
+        });
+        let welcomeMsg = `${sortedBoardingCards.length + 1}. You have arrived at your final destination.`;
+        console.log(welcomeMsg);
+        result.push(welcomeMsg);
+        res.send(result);
     }
     catch (e) {
         res.status(400).send(e);

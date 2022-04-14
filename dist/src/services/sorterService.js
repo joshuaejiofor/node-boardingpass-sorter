@@ -6,16 +6,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SorterService = void 0;
 const linq_1 = __importDefault(require("linq"));
 class SorterService {
-    SortBoardingCards = (boardingCards) => {
-        var counter = 0;
-        var totalBoardingCards = boardingCards.length;
-        var boardingCard = linq_1.default.from(boardingCards).where(c => !linq_1.default.from(boardingCards).select(b => b.To).contains(c.From)).firstOrDefault();
-        boardingCard.TravelSequence = ++counter;
-        while (counter < totalBoardingCards) {
-            boardingCard = linq_1.default.from(boardingCards).where(c => c.From == boardingCard.To).firstOrDefault();
-            boardingCard.TravelSequence = ++counter;
-        }
-        return linq_1.default.from(boardingCards).orderBy(c => c.TravelSequence).toArray();
-    };
+    constructor() {
+        this.SortBoardingCards = (boardingCards) => {
+            let counter = 0;
+            let totalBoardingCards = boardingCards.length;
+            let boardingCard = linq_1.default.from(boardingCards).where(c => !linq_1.default.from(boardingCards).select(b => b.to).contains(c.from)).firstOrDefault();
+            boardingCard.travelSequence = ++counter;
+            while (counter < totalBoardingCards) {
+                boardingCard = linq_1.default.from(boardingCards).where(c => c.from == boardingCard.to).firstOrDefault();
+                boardingCard.travelSequence = ++counter;
+            }
+            return linq_1.default.from(boardingCards).orderBy(c => c.travelSequence).toArray();
+        };
+    }
 }
 exports.SorterService = SorterService;
