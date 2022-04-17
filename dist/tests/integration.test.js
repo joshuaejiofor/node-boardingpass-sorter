@@ -21,9 +21,9 @@ beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
 // Check Stations Api
 test('Check endpoint /api/v1/sorter', () => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield (0, supertest_1.default)(app_1.default)
-        .get(`/api/v1/sorter`)
+        .post(`/api/v1/sorter`)
         .set('Authorization', `Bearer ${testData_1.token}`)
-        .send(JSON.stringify(testData_1.testData))
+        .send(testData_1.testData)
         .expect(200);
     var boardingCards = JSON.parse(JSON.stringify(testData_1.testData));
     expect(response.body).not.toBeNull();
@@ -31,16 +31,16 @@ test('Check endpoint /api/v1/sorter', () => __awaiter(void 0, void 0, void 0, fu
 }));
 test('Check endpoint /api/v1/sorter with no token', () => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield (0, supertest_1.default)(app_1.default)
-        .get(`/api/v1/sorter`)
+        .post(`/api/v1/sorter`)
         .send(JSON.stringify(testData_1.testData))
         .expect(401);
     expect(response.body.error).toEqual('Please authenticate.');
 }));
 test('Check endpoint /api/v1/sorter with invalid param', () => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield (0, supertest_1.default)(app_1.default)
-        .get(`/api/v1/sorter`)
+        .post(`/api/v1/sorter`)
         .set('Authorization', `Bearer ${testData_1.token}`)
         .send()
-        .expect(404);
-    expect(response.body.error).toEqual('No data found');
+        .expect(400);
+    expect(response.body.error).toBeUndefined();
 }));

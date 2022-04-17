@@ -1,5 +1,6 @@
 import { BoardingCard } from '../src/models/boardingCard';
 import {SorterService} from '../src/services/sorterService'
+import { validateData } from '../src/utils/getDirection';
 import { testData } from './testData';
 
 beforeAll(async () => {
@@ -9,11 +10,9 @@ beforeAll(async () => {
 
 test('Test Sorter Service', () => {
     var sorterService = new SorterService();
-    var boardingCards = <BoardingCard[]> JSON.parse(JSON.stringify(testData))
+    let boardingCards = validateData(<BoardingCard[]> JSON.parse(JSON.stringify(testData)))
 
     let sortedBoardingCards = sorterService.SortBoardingCards(boardingCards);
-
-    console.log(sortedBoardingCards);
 
     expect(sortedBoardingCards).not.toBeNull()
     expect(sortedBoardingCards).toEqual(expect.any(Object));

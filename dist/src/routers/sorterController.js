@@ -35,18 +35,15 @@ sortRouter.post('/api/v1/sorter', auth_1.default, (req, res) => {
     try {
         if (!req.body)
             return res.status(404).send({ error: "Invalid request" });
-        const sorterService = new sorterService_1.SorterService();
-        const boardingCards = JSON.parse(JSON.stringify(req.body));
-        let sortedBoardingCards = sorterService.SortBoardingCards(boardingCards);
+        let boardingCards = (0, getDirection_1.validateData)(JSON.parse(JSON.stringify(req.body)));
+        let sortedBoardingCards = new sorterService_1.SorterService().SortBoardingCards(boardingCards);
         if (!sortedBoardingCards)
             return res.status(404).send({ error: "No data found" });
         let result = sortedBoardingCards.map(card => {
-            console.log((0, getDirection_1.getString)(card));
-            return (0, getDirection_1.getString)(card);
+            return card.getString();
         });
-        let welcomeMsg = `${sortedBoardingCards.length + 1}. You have arrived at your final destination.`;
-        console.log(welcomeMsg);
-        result.push(welcomeMsg);
+        result.push(`${sortedBoardingCards.length + 1}. You have arrived at your final destination.`);
+        console.log(result);
         res.send(result);
     }
     catch (e) {

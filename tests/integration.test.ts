@@ -10,9 +10,9 @@ beforeAll(async () => {
 // Check Stations Api
 test('Check endpoint /api/v1/sorter', async () => {
     const response = await request(app)
-        .get(`/api/v1/sorter`)
+        .post(`/api/v1/sorter`)
         .set('Authorization', `Bearer ${token}`)
-        .send(JSON.stringify(testData))
+        .send(testData)
         .expect(200)
 
     var boardingCards = <BoardingCard[]> JSON.parse(JSON.stringify(testData))
@@ -22,7 +22,7 @@ test('Check endpoint /api/v1/sorter', async () => {
 
 test('Check endpoint /api/v1/sorter with no token', async () => {
     const response = await request(app)
-        .get(`/api/v1/sorter`)
+        .post(`/api/v1/sorter`)
         .send(JSON.stringify(testData))
         .expect(401);
     
@@ -32,11 +32,10 @@ test('Check endpoint /api/v1/sorter with no token', async () => {
 
 test('Check endpoint /api/v1/sorter with invalid param', async () => {
     const response = await request(app)
-        .get(`/api/v1/sorter`)
+        .post(`/api/v1/sorter`)
         .set('Authorization', `Bearer ${token}`)
         .send()
-        .expect(404) 
-
-    expect(response.body.error).toEqual('No data found') 
+        .expect(400) 
+    
+    expect(response.body.error).toBeUndefined()
 })
-

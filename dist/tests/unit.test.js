@@ -10,15 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sorterService_1 = require("../src/services/sorterService");
+const getDirection_1 = require("../src/utils/getDirection");
 const testData_1 = require("./testData");
 beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
     jest.setTimeout(15000);
 }));
 test('Test Sorter Service', () => {
     var sorterService = new sorterService_1.SorterService();
-    var boardingCards = JSON.parse(JSON.stringify(testData_1.testData));
+    let boardingCards = (0, getDirection_1.validateData)(JSON.parse(JSON.stringify(testData_1.testData)));
     let sortedBoardingCards = sorterService.SortBoardingCards(boardingCards);
-    console.log(sortedBoardingCards);
     expect(sortedBoardingCards).not.toBeNull();
     expect(sortedBoardingCards).toEqual(expect.any(Object));
 });
